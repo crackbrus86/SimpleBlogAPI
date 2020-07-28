@@ -31,11 +31,11 @@ namespace SimpleBlogAPI.Controllers
         public async Task<IActionResult> Authenticate(AuthenticateRequest contract, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new { message = "One or more validation errors occurred."});
+                return BadRequest(new ResponseMessage { Message = "One or more validation errors occurred."});
             var response = await _userService.Authenticate(contract.Username, contract.Password, cancellationToken);
 
             if(response == null)
-                return BadRequest(new { message = "User is not found"});
+                return BadRequest(new ResponseMessage { Message = "User is not found"});
 
             return Ok(_mapper.Map<AuthenticateResponse>(response));
         }
@@ -45,21 +45,12 @@ namespace SimpleBlogAPI.Controllers
         public async Task<IActionResult> Register(RegisterRequest contract, CancellationToken cancellationToken)
         {
             if(!ModelState.IsValid)
-                return BadRequest(new { message = "One or more validation errors occurred."});
+                return BadRequest(new ResponseMessage { Message = "One or more validation errors occurred."});
 
             var result = await _userService.Register(_mapper.Map<UserDTO>(contract), cancellationToken);
             if(!result)
-                return BadRequest(new { message = "Can't create user account."});
-            return Ok(new { message = "User has been created!"});
+                return BadRequest(new ResponseMessage { Message = "Can't create user account."});
+            return Ok(new ResponseMessage { Message = "User has been created!"});
         }
-
-        //[Authorize]
-        //[HttpGet("getuserbyid")]
-        //[Route("/getuserbyid")]
-        //public IActionResult GetUserById()
-        //{
-        //    var user = (SimpleBlogAPI.Entities.User) HttpContext.Items["User"];
-        //    return Ok(user.Id);
-        //}
     }
 }

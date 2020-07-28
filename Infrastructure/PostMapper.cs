@@ -20,6 +20,7 @@ namespace SimpleBlogAPI.Infrastructure
                 cfg.CreateMap<PostDTO, GetPostResponse>();
                 cfg.CreateMap<PostDTO, GetMyPostResponse>();
                 cfg.CreateMap<CreatePostRequest, PostDTO>();
+                cfg.CreateMap<UpdatePostRequest, PostDTO>();
             });
             Mapper = config.CreateMapper();
         }

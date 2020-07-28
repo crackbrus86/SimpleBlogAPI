@@ -64,4 +64,30 @@ namespace SimpleBlogAPI.Models
         [Required]
         public string Content { get; set; }
     }
+
+    public class UpdatePostRequest
+    {
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        public string Title { get; set; }
+        [Required]
+        public string Content { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public bool IsPublished { get; set; }
+        public DateTime? PublishedDate { get; set; }
+    }
+
+    public class PublishRequest
+    {
+        [Required]
+        public int Id { get; set; }
+    }
+
+    public class DeleteRequest
+    {
+        [Required]
+        public int Id { get; set; }
+    }
 }

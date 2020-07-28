@@ -35,11 +35,11 @@ namespace SimpleBlogAPI.Controllers
         public async Task<IActionResult> GetProfile([FromQuery] GetProfileRequest contract, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new { message = "One or more validation errors occurred." });
+                return BadRequest(new ResponseMessage { Message = "One or more validation errors occurred." });
 
             var profile = await _service.GetProfile(contract.Id, cancellationToken);
             if (profile == null)
-                return BadRequest(new { message = "Profile not found" });
+                return BadRequest(new ResponseMessage { Message = "Profile not found" });
             return Ok(_mapper.Map<GetProfileResponse>(profile));
         }
 
@@ -49,13 +49,13 @@ namespace SimpleBlogAPI.Controllers
         public async Task<IActionResult> Save(SaveProfileRequest contract, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new { message = "One or more validation errors occurred." });
+                return BadRequest(new ResponseMessage { Message = "One or more validation errors occurred." });
             var result = await _service.UpdateProfile(_mapper.Map<ProfileDTO>(contract), cancellationToken);
 
             if (!result)
-                return BadRequest(new { message = "Profile has not been saved." });
+                return BadRequest(new ResponseMessage { Message = "Profile has not been saved." });
 
-            return Ok(new { message = "Profile saved." });
+            return Ok(new ResponseMessage { Message = "Profile saved." });
         }
     }
 }

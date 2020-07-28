@@ -21,6 +21,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+[Oo]bj\
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -266,3 +267,5 @@ __pycache__/
 
 # Cake - Uncomment if you are using it
 # tools/
+*.cache
+Migrations/20200721194952_DBMigrate.cs
