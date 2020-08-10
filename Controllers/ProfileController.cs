@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SimpleBlogAPI.Entities;
 using SimpleBlogAPI.Helpers;
 using SimpleBlogAPI.Infrastructure;
 using SimpleBlogAPI.Interfaces;
@@ -36,6 +37,10 @@ namespace SimpleBlogAPI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ResponseMessage { Message = "One or more validation errors occurred." });
+
+            var user = (User)Request.HttpContext.Items["User"];
+            if(user.ProfileId != contract.Id)
+                return BadRequest(new ResponseMessage { Message = "Profile Id is not correct." });
 
             var profile = await _service.GetProfile(contract.Id, cancellationToken);
             if (profile == null)
