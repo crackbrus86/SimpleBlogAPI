@@ -73,6 +73,11 @@ namespace SimpleBlogAPI.Controllers
 
             if (post == null)
                 return BadRequest(new ResponseMessage { Message = "Post not found." });
+            var user = (SimpleBlogAPI.Entities.User)HttpContext.Items["User"];
+
+            if (post.UserId != user.Id)
+                return BadRequest(new ResponseMessage { Message = "You don't have access to this post." });
+
             return Ok(_mapper.Map<GetMyPostResponse>(post));
         }
 
@@ -83,8 +88,10 @@ namespace SimpleBlogAPI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ResponseMessage { Message = "One or more validation errors occurred." });
+
             var user = (SimpleBlogAPI.Entities.User)HttpContext.Items["User"];
             bool result = await _postService.Create(_mapper.Map<PostDTO>(contract), user.Id, cancellationToken);
+
             if (!result)
                 return BadRequest(new ResponseMessage { Message = "Post has't been created. Something went wrong." });
             return Ok(new ResponseMessage { Message = "Post has been created." });
@@ -100,6 +107,7 @@ namespace SimpleBlogAPI.Controllers
 
             var user = (SimpleBlogAPI.Entities.User)HttpContext.Items["User"];
             var post = _mapper.Map<PostDTO>(contract);
+
             post.UserId = user.Id;
             bool result = await _postService.Update(post, cancellationToken);
             if (!result)

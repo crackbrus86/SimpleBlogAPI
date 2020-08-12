@@ -41,7 +41,10 @@ namespace SimpleBlogAPI.Services
         {
             Post post = await _repository.Get(postId, cancellationToken);
             PostDTO result = _mapper.Map<PostDTO>(post);
-            result.Author = (result.User?.Profile?.FirstName?.Length > 0 && result.User?.Profile?.LastName?.Length > 0) ? String.Format("{0} {1}", result.User.Profile.FirstName, result.User.Profile.LastName) : result.User.Username;
+
+            if(result != null)
+                result.Author = (result.User?.Profile?.FirstName?.Length > 0 && result.User?.Profile?.LastName?.Length > 0) ? String.Format("{0} {1}", result.User.Profile.FirstName, result.User.Profile.LastName) : result.User.Username;
+
             return result;
         }
 
